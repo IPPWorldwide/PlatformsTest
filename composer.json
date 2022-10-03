@@ -1,0 +1,22 @@
+{
+	"name": "ippworldwide/platformstest",
+	"description": "A Platforms Testing tool, to qualify all functions works properly",
+
+	"require-dev": {
+		"ext-curl": "*",
+		"ext-dom": "*",
+		"ext-json": "*",
+		"phpunit/phpunit": "9.*",
+		"vlucas/phpdotenv": "5.4.1"
+	},
+	"autoload": {
+		"psr-4": {
+			"App\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"App\\Test\\": "test"
+		}
+	}
+}

@@ -1,0 +1,26 @@
+name: CI-coverage
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: php-actions/composer@v5
+
+      - name: PHPUnit Tests
+        uses: php-actions/phpunit@v2
+        env:
+            API_URL: ${{ secrets.API_URL }}
+            MERCHANT_URL: ${{ secrets.MERCHANT_URL }}
+            PARTNER_USERNAME: ${{ secrets.PARTNER_USERNAME }}
+            PARTNER_PASSWORD: ${{ secrets.PARTNER_PASSWORD }}
+            COMPANY_USERNAME: ${{ secrets.COMPANY_USERNAME }}
+            COMPANY_PASSWORD: ${{ secrets.COMPANY_PASSWORD }}
+        with:
+          bootstrap: vendor/autoload.php
+          configuration: test/phpunit.xml
+          args: --coverage-text
