@@ -31,7 +31,6 @@ class APICompanyTest extends \PHPUnit\Framework\TestCase {
         $login = $partner->login($_ENV["COMPANY_USERNAME"], $_ENV["COMPANY_PASSWORD"])->content;
         $data = $partner->data($login->user_id,$login->session_id)->content;
         $checkout_id = $partner->checkout_id($data->id,$data->security->key2)->content;
-        var_dump($checkout_id);
         self::assertObjectHasAttribute(
             "checkout_id",
             $checkout_id
