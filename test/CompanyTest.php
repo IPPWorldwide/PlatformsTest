@@ -54,6 +54,7 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
         $request    = new IPPRequest("","");
         $company    = new IPP($request,"","");
         $version = $company->version();
+        var_dump($version);
         $this->assertGreaterThan($_ENV["VERSION"],$version->content->version);
     }
 
