@@ -5,7 +5,7 @@ class Portal {
     private $ENV = null;
     public function curl ($url,$post_data) {
         $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $_ENV["MERCHANT_URL"] . $url);
+        curl_setopt($ch, CURLOPT_URL, "http://merchantadmin/" . $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POST, 1);
