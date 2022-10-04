@@ -3,7 +3,7 @@ namespace App\Test;
 use App\Portal;
 use App\Partner;
 
-if($_ENV["TEST_PORTAL"] === "1") {
+if(isset($_ENV["TEST_PORTAL"]) && $_ENV["TEST_PORTAL"] === "1") {
     class PortalTest extends \PHPUnit\Framework\TestCase {
         public function testSetup() {
             $partner    = new Partner();
@@ -28,7 +28,7 @@ if($_ENV["TEST_PORTAL"] === "1") {
                 "partner_key2"  => $data->security->key2,
             ]);
             $portal_html = $portal->curl("/", []);
-            $this->assertContains("TestingPortal", $portal_html );
+            $this->assertStringContainsString("TestingPortal", $portal_html );
 
         }
         public function testPartnerData() {
@@ -40,5 +40,9 @@ if($_ENV["TEST_PORTAL"] === "1") {
                 $data
             );
         }
+    }
+} else {
+    class PortalTest extends \PHPUnit\Framework\TestCase
+    {
     }
 }
