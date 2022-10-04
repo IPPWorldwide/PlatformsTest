@@ -29,8 +29,10 @@ if(isset($_ENV["TEST_PORTAL"]) && $_ENV["TEST_PORTAL"] === "1") {
             ]);
             $portal_html = $portal->curl("/", []);
             $this->assertStringContainsString("TestingPortal", $portal_html );
-
         }
+        /**
+         * @depends testSetup
+         */
         public function testPartnerData() {
             $partner = new Partner();
             $login = $partner->login($_ENV["PARTNER_USERNAME"], $_ENV["PARTNER_PASSWORD"])->content;
