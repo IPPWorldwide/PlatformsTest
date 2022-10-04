@@ -12,6 +12,6 @@ class Portal {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
         $server_output = curl_exec($ch);
         curl_close($ch);
-        return json_decode($server_output);
+        return $server_output;
     }
 }
