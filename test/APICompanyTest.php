@@ -77,4 +77,10 @@ class APICompanyTest extends \PHPUnit\Framework\TestCase {
             $data->meta_data->address->postal
         );
     }
+    public function testVersion()
+    {
+        $partner = new Company();
+        $version = $partner->version();
+        $this->assertGreaterThan($_ENV["COMPANY_VERSION"],$version->content->version);
+    }
 }

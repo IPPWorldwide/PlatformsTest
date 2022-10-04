@@ -49,15 +49,14 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
         $this->assertSame(true, $check_login->success);
     }
 
+    /*
     public function testVersion()
     {
         $request    = new IPPRequest("","");
         $company    = new IPP($request,"","");
         $version = $company->version();
-        var_dump($_ENV);
         $this->assertGreaterThan($_ENV["COMPANY_VERSION"],$version->content->version);
     }
-
     public function testSecurePayment()
     {
         $request    = new IPPRequest("","");
@@ -139,6 +138,8 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
             $this->assertSame(date("Y", strtotime("+1 year")), $secure_authorize->content->card_data->year);
 
         }
+
+    */
 
 
 

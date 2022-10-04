@@ -26,6 +26,9 @@ class Company {
         $post_data = ["user_id" => $user_id, "session_id" => $session_id, "field" => $field, "value" => $value];
         return $this->curl($_ENV["API_URL"]."/company/data/update?", $post_data);
     }
+    public function version():\stdClass {
+        return $this->curl($_ENV["API_URL"]."/version", []);
+    }
 
     public function checkout_id($username,$password){
         $data = [];
