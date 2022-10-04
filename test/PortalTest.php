@@ -46,5 +46,8 @@ if(isset($_ENV["TEST_PORTAL"]) && $_ENV["TEST_PORTAL"] === "1") {
 } else {
     class PortalTest extends \PHPUnit\Framework\TestCase
     {
+        public function testNoPortalTest() {
+            $this->assertStringContainsString("2","123");
+        }
     }
 }
