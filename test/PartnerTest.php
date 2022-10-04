@@ -23,7 +23,7 @@ final class PartnerTest extends \PHPUnit\Framework\TestCase
     {
         $request    = new IPPRequest("","");
         $partner    = new IPPPartner($request,"","");
-        $login = $partner->login($_ENV["PARTNER_USER"],$_ENV["PARTNER_PASSWORD"]);
+        $login = $partner->login($_ENV["PARTNER_USERNAME"],$_ENV["PARTNER_PASSWORD"]);
         $this->assertSame(true, $login->success);
         $this->assertSame("Request performed successfully", $login->message);
         $this->assertSame(200, $login->code);
@@ -38,7 +38,7 @@ final class PartnerTest extends \PHPUnit\Framework\TestCase
     {
         $request    = new IPPRequest("","");
         $partner    = new IPPPartner($request,"","");
-        $login = $partner->login($_ENV["PARTNER_USER"],$_ENV["PARTNER_PASSWORD"]);
+        $login = $partner->login($_ENV["PARTNER_USERNAME"],$_ENV["PARTNER_PASSWORD"]);
         $check_login = $partner->CheckLogin();
         $this->assertNotEmpty($check_login->content->id);
         $this->assertNotEmpty($check_login->content->name);
