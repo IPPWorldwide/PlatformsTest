@@ -1,6 +1,21 @@
 <?php
 
 namespace App\Test;
+use App\Company;
+use App\IPP;
+use App\IPPCurrency;
+use App\IPPGateway;
+use App\IPPLanguages;
+use App\IPPMenu;
+use App\IPPPartner;
+use App\IPPPartnerGraph;
+use App\IPPPayments;
+use App\IPPPlugins;
+use App\IPPRequest;
+use App\IPPUtils;
+use App\Partner;
+use App\Portal;
+use App\User;
 
 final class CompanyTest extends \PHPUnit\Framework\TestCase
 {
