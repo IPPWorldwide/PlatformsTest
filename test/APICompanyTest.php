@@ -81,6 +81,6 @@ class APICompanyTest extends \PHPUnit\Framework\TestCase {
     {
         $partner = new Company();
         $version = $partner->version();
-        $this->assertGreaterThan($_ENV["COMPANY_VERSION"],$version->content->version);
+        $this->assertGreaterThan($_ENV["VERSION"],$version->content->version);
     }
 }
