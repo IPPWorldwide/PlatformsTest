@@ -175,8 +175,6 @@ class IPP {
         return $this->request->curl($_ENV["API_URL"]."/versions.php")->content->versions;
     }
     public function version() {
-        if(!isset($_ENV["API_URL"]))
-            $_ENV["API_URL"] = "https://api.ippeurope.com";
         return $this->request->curl($_ENV["API_URL"]."/version.php");
     }
 
