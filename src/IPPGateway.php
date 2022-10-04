@@ -12,14 +12,14 @@ class IPPGateway {
     }
 
     public function checkout_id($data){
-        return $this->curl($_ENV["GLOBAL_BASE_URL"]."/payments/checkout_id", "POST", [], $data)->content;
+        return $this->curl($_ENV["API_URL"]."/payments/checkout_id", "POST", [], $data)->content;
     }
     public function payment_status($transaction_id,$transaction_key){
         $data = ["transaction_id" => $transaction_id, "transaction_key" => $transaction_key];
-        return $this->curl($_ENV["GLOBAL_BASE_URL"]."/payments/status", "POST", [], $data)->content;
+        return $this->curl($_ENV["API_URL"]."/payments/status", "POST", [], $data)->content;
     }
     public function request($url, $data){
-        return $this->curl($_ENV["GLOBAL_BASE_URL"]."/".$url, "POST", [], $data);
+        return $this->curl($_ENV["API_URL"]."/".$url, "POST", [], $data);
     }
     private function curl($url, $type = 'POST', $query = [], $data = [], $headers = []){
         $data["id"] = $this->company_id;
