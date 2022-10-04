@@ -20,6 +20,8 @@ jobs:
             PARTNER_PASSWORD: ${{ secrets.PARTNER_PASSWORD }}
             COMPANY_USERNAME: ${{ secrets.COMPANY_USERNAME }}
             COMPANY_PASSWORD: ${{ secrets.COMPANY_PASSWORD }}
+            COMPANY_VERSION: ${{ secrets.COMPANY_VERSION }}
+            TESTING_CARDNO: ${{ secrets.TESTING_CARDNO }}
         with:
           bootstrap: vendor/autoload.php
           configuration: test/phpunit.xml
