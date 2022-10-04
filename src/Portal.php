@@ -12,6 +12,8 @@ class Portal {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
         $server_output = curl_exec($ch);
         curl_close($ch);
+        var_dump($_ENV["MERCHANT_URL"] . $url);
+        var_dump($server_output);
         return $server_output;
     }
 }
