@@ -181,6 +181,9 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
             $this->assertSame("success.php", $secure_authorize->content->success_url);
             $this->assertSame(date("m", strtotime("+1 month")), $secure_authorize->content->card_data->month);
             $this->assertSame(date("Y", strtotime("+1 year")), $secure_authorize->content->card_data->year);
+            $this->assertSame(14, strlen($secure_authorize->content->action_id));
+            $this->assertSame(14, strlen($secure_authorize->content->transaction_id));
+            $this->assertSame(8, strlen($secure_authorize->content->transaction_key));
 
             $payment_data = $company->TransactionsData($secure_authorize->content->action_id);
             $this->assertIsObject($payment_data->order_data);
