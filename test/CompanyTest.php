@@ -57,8 +57,57 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
         $this->assertGreaterThan($_ENV["COMPANY_VERSION"],$version->content->version);
     }
 
-    public function testSecurePayment()
+    public function testThreeDSecure()
     {
+        $request = new IPPRequest("", "");
+        $company = new IPP($request, "", "");
+        $login = $company->login($_ENV["COMPANY_USERNAME"], $_ENV["COMPANY_PASSWORD"]);
+        $check_login = $company->CheckLogin();
+
+        $gateway = new IPPGateway($check_login->content->id, $check_login->content->security->key2);
+        $currency = ["EUR"];
+        foreach ($currency as $c_value) {
+            $random_amount = rand(500, 8000);
+            $data = [];
+            $data["currency"] = $c_value;
+            $data["amount"] = number_format(str_replace(",", ".", $random_amount), 2, "", "");
+            $data["order_id"] = "Testing Order";
+            $data["transaction_type"] = "ECOM";
+
+            $data = $gateway->checkout_id($data);
+
+            $data_url = $data->checkout_id;
+            $cryptogram = $data->cryptogram;
+
+            $this->assertNotEmpty($data_url);
+            $this->assertNotEmpty($cryptogram);
+
+            $request = new IPPRequest($check_login->content->id, $login->content->session_id);
+
+            $status_code = $request->request("payments/status", [
+                "id" => $check_login->content->id,
+                "key2" => $check_login->content->security->key2,
+                "checkout_id" => $data_url,
+            ]);
+            $this->assertSame("WAIT", $status_code->content->result);
+
+            $secure_checkout = $request->request("payments/secure", [
+                "method" => "card",
+                "cipher" => "2020",
+                "checkout_id" => $data_url,
+                "holder" => "Test Customer",
+                "cardno" => $_ENV["TESTING_CARDNO"],
+                "expmonth" => date("m", strtotime("+1 month")),
+                "expyear" => date("Y", strtotime("+1 year")),
+                "cvv" => "123"
+            ]);
+
+            $this->assertSame("Transaction has been executed successfully.", $secure_checkout->content->transaction_data->z3);
+        }
+    }
+
+
+    public function testSecurePayment() {
         $request    = new IPPRequest("","");
         $company    = new IPP($request,"","");
         $login = $company->login($_ENV["COMPANY_USERNAME"],$_ENV["COMPANY_PASSWORD"]);
@@ -66,9 +115,7 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
 
         $gateway    = new IPPGateway($check_login->content->id,$check_login->content->security->key2);
 
-//        $currency = ["DKK","SEK","NOK","EUR","USD","GBP","PLN"];
-        $currency = ["DKK"];
-
+        $currency = ["DKK","SEK","NOK","EUR","USD","GBP","PLN"];
         foreach($currency as $c_value) {
             $random_amount = rand(500,8000);
             $data   = [];
@@ -138,8 +185,5 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
             $this->assertSame(date("Y", strtotime("+1 year")), $secure_authorize->content->card_data->year);
 
         }
-
-
-
     }
 }
