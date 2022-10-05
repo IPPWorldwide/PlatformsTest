@@ -105,8 +105,6 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
             $this->assertSame("Transaction has been executed successfully.", $secure_checkout->content->transaction_data->z3);
         }
     }
-
-
     public function testSecurePayment() {
         $request    = new IPPRequest("","");
         $company    = new IPP($request,"","");
@@ -183,6 +181,10 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
             $this->assertSame("success.php", $secure_authorize->content->success_url);
             $this->assertSame(date("m", strtotime("+1 month")), $secure_authorize->content->card_data->month);
             $this->assertSame(date("Y", strtotime("+1 year")), $secure_authorize->content->card_data->year);
+
+            $payment_data = $company->TransactionsData($secure_authorize->content->action_id);
+            $this->assertIsObject($payment_data->order_data);
+            $this->assertIsObject($payment_data->order_data->related);
 
         }
     }
