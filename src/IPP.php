@@ -39,8 +39,8 @@ class IPP {
         return $this->request->curl($_ENV["API_URL"]."/company/cards/stored/", "POST", [], $data)->content;
     }
 
-    public function TransactionsList($list_type,$result,$payment_start,$payment_end) {
-        $data = ["user_id" => $this->user_id, "session_id" => $this->session_id, "type" => $list_type, "result" => $result,"payment_earliest" => (strtotime($payment_start)-$_COOKIE["timezone"]),"payment_latest"=>(strtotime($payment_end)-$_COOKIE["timezone"])];
+    public function TransactionsList($list_type,$result,$payment_start,$payment_end,$timezone=0) {
+        $data = ["user_id" => $this->user_id, "session_id" => $this->session_id, "type" => $list_type, "result" => $result,"payment_earliest" => (strtotime($payment_start)-$timezone),"payment_latest"=>(strtotime($payment_end)-$timezone)];
         return $this->request->curl($_ENV["API_URL"]."/company/payments/list/", "POST", [], $data)->content;
     }
     public function TransactionsData($action_id) {

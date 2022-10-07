@@ -365,4 +365,22 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
         }
     }
     */
+
+    /**
+     * $depends testSecurePayment
+     */
+    public function testPaymentData() {
+        $request    = new IPPRequest("","");
+        $company    = new IPP($request,"","");
+        $login = $company->login($_ENV["COMPANY_USERNAME"],$_ENV["COMPANY_PASSWORD"]);
+        $check_login = $company->CheckLogin();
+        $list = $company->TransactionsList("AUTH","ACK",0,1);
+        $first_transaction = $list[0];
+        $this->assertSame(14, strlen($first_transaction->transaction_id));
+        $this->assertSame(14, strlen($first_transaction->action_id));
+        $this->assertSame(14, strlen($first_transaction->company_id));
+        $this->assertSame("AUTH", $first_transaction->method);
+        $this->assertSame("Test Customer", $first_transaction->cardholder);
+        $this->assertSame("ACK", $first_transaction->result);
+    }
 }
