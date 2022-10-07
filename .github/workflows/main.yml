@@ -22,6 +22,7 @@ jobs:
             COMPANY_PASSWORD: ${{ secrets.COMPANY_PASSWORD }}
             COMPANY_VERSION: ${{ secrets.COMPANY_VERSION }}
             TESTING_CARDNO: ${{ secrets.TESTING_CARDNO }}
+            API_AUTOMATIONS_URL: ${{ secrets.API_AUTOMATIONS_URL }}
         with:
           bootstrap: vendor/autoload.php
           configuration: test/phpunit.xml
