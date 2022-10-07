@@ -191,4 +191,178 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
 
         }
     }
+    /*
+    public function testSecurePaymentAmex() {
+        $request    = new IPPRequest("","");
+        $company    = new IPP($request,"","");
+        $login = $company->login($_ENV["COMPANY_USERNAME"],$_ENV["COMPANY_PASSWORD"]);
+        $check_login = $company->CheckLogin();
+
+        $gateway    = new IPPGateway($check_login->content->id,$check_login->content->security->key2);
+
+        $currency = ["USD"];
+        foreach($currency as $c_value) {
+            $random_amount = rand(100,5000);
+            $data   = [];
+            $data["currency"] = $c_value;
+            $data["amount"] = number_format(str_replace(",",".",$random_amount),2,"","");
+            $data["order_id"] = "Testing Order";
+            $data["transaction_type"] = "ECOM";
+
+            $data = $gateway->checkout_id($data);
+
+            $data_url = $data->checkout_id;
+            $cryptogram = $data->cryptogram;
+
+            $this->assertNotEmpty($data_url);
+            $this->assertNotEmpty($cryptogram);
+
+            $request    = new IPPRequest($check_login->content->id,$login->content->session_id);
+
+            $status_code = $request->request("payments/status", [
+                "id" => $check_login->content->id,
+                "key2" => $check_login->content->security->key2,
+                "checkout_id" => $data_url,
+            ]);
+            $this->assertSame("WAIT", $status_code->content->result);
+
+            $secure_checkout = $request->request("payments/secure", [
+                "method" => "card",
+                "cipher" => "2020",
+                "checkout_id" => $data_url,
+                "holder"        => "Test Customer",
+                "cardno"        => $_ENV["TESTING_CARDNO_AMEX"],
+                "expmonth"      => date("m", strtotime("+1 month")),
+                "expyear"       => date("Y", strtotime("+1 year")),
+                "cvv"           => "123"
+            ]);
+
+            $this->assertSame("Transaction has been executed successfully.", $secure_checkout->content->transaction_data->z3);
+
+            $status_code = $request->request("payments/status", [
+                "id" => $check_login->content->id,
+                "key2" => $check_login->content->security->key2,
+                "checkout_id" => $data_url,
+            ]);
+            $this->assertSame("COMPLETED", $status_code->content->result);
+
+            $secure_authorize = $request->request("payments/authorize", [
+                "cipher" => "2020",
+                "method" => "card",
+                "checkout_id" => $data_url,
+                "holder"        => "Test Customer",
+                "cardno"        => $_ENV["TESTING_CARDNO_AMEX"],
+                "expmonth"      => date("m", strtotime("+1 month")),
+                "expyear"       => date("Y", strtotime("+1 year")),
+                "cvv"           => "123"
+            ]);
+            $this->assertSame(true, $secure_authorize->success);
+            $this->assertSame(200, $secure_authorize->code);
+            $this->assertSame("ACK", $secure_authorize->content->result);
+            $this->assertSame("NEW", $secure_authorize->content->status);
+            $this->assertSame(false, $secure_authorize->content->consumer->recurring);
+            $this->assertSame(1, $secure_authorize->content->consumer->purchases);
+            $this->assertSame(0, $secure_authorize->content->risk->score);
+            $this->assertSame("SERVE", $secure_authorize->content->risk->suggestion);
+            $this->assertSame(number_format(str_replace(",",".",$random_amount),2,"",""), $secure_authorize->content->presentation->amount);
+            $this->assertSame("success.php", $secure_authorize->content->success_url);
+            $this->assertSame(date("m", strtotime("+1 month")), $secure_authorize->content->card_data->month);
+            $this->assertSame(date("Y", strtotime("+1 year")), $secure_authorize->content->card_data->year);
+            $this->assertSame(14, strlen($secure_authorize->content->action_id));
+            $this->assertSame(14, strlen($secure_authorize->content->transaction_id));
+            $this->assertSame(8, strlen($secure_authorize->content->transaction_key));
+
+            $payment_data = $company->TransactionsData($secure_authorize->content->action_id);
+            $this->assertIsObject($payment_data->order_data);
+            $this->assertIsObject($payment_data->order_data->related);
+
+        }
+    }
+    public function testSecurePaymentDiscover() {
+        $request    = new IPPRequest("","");
+        $company    = new IPP($request,"","");
+        $login = $company->login($_ENV["COMPANY_USERNAME"],$_ENV["COMPANY_PASSWORD"]);
+        $check_login = $company->CheckLogin();
+
+        $gateway    = new IPPGateway($check_login->content->id,$check_login->content->security->key2);
+
+        $currency = ["USD"];
+        foreach($currency as $c_value) {
+            $random_amount = rand(100,5000);
+            $data   = [];
+            $data["currency"] = $c_value;
+            $data["amount"] = number_format(str_replace(",",".",$random_amount),2,"","");
+            $data["order_id"] = "Testing Order";
+            $data["transaction_type"] = "ECOM";
+
+            $data = $gateway->checkout_id($data);
+
+            $data_url = $data->checkout_id;
+            $cryptogram = $data->cryptogram;
+
+            $this->assertNotEmpty($data_url);
+            $this->assertNotEmpty($cryptogram);
+
+            $request    = new IPPRequest($check_login->content->id,$login->content->session_id);
+
+            $status_code = $request->request("payments/status", [
+                "id" => $check_login->content->id,
+                "key2" => $check_login->content->security->key2,
+                "checkout_id" => $data_url,
+            ]);
+            $this->assertSame("WAIT", $status_code->content->result);
+
+            $secure_checkout = $request->request("payments/secure", [
+                "method" => "card",
+                "cipher" => "2020",
+                "checkout_id" => $data_url,
+                "holder"        => "Test Customer",
+                "cardno"        => $_ENV["TESTING_CARDNO_DISCOVER"],
+                "expmonth"      => date("m", strtotime("+1 month")),
+                "expyear"       => date("Y", strtotime("+1 year")),
+                "cvv"           => "123"
+            ]);
+
+            $this->assertSame("Transaction has been executed successfully.", $secure_checkout->content->transaction_data->z3);
+
+            $status_code = $request->request("payments/status", [
+                "id" => $check_login->content->id,
+                "key2" => $check_login->content->security->key2,
+                "checkout_id" => $data_url,
+            ]);
+            $this->assertSame("COMPLETED", $status_code->content->result);
+
+            $secure_authorize = $request->request("payments/authorize", [
+                "cipher" => "2020",
+                "method" => "card",
+                "checkout_id" => $data_url,
+                "holder"        => "Test Customer",
+                "cardno"        => $_ENV["TESTING_CARDNO_DISCOVER"],
+                "expmonth"      => date("m", strtotime("+1 month")),
+                "expyear"       => date("Y", strtotime("+1 year")),
+                "cvv"           => "123"
+            ]);
+            $this->assertSame(true, $secure_authorize->success);
+            $this->assertSame(200, $secure_authorize->code);
+            $this->assertSame("ACK", $secure_authorize->content->result);
+            $this->assertSame("NEW", $secure_authorize->content->status);
+            $this->assertSame(false, $secure_authorize->content->consumer->recurring);
+            $this->assertSame(1, $secure_authorize->content->consumer->purchases);
+            $this->assertSame(0, $secure_authorize->content->risk->score);
+            $this->assertSame("SERVE", $secure_authorize->content->risk->suggestion);
+            $this->assertSame(number_format(str_replace(",",".",$random_amount),2,"",""), $secure_authorize->content->presentation->amount);
+            $this->assertSame("success.php", $secure_authorize->content->success_url);
+            $this->assertSame(date("m", strtotime("+1 month")), $secure_authorize->content->card_data->month);
+            $this->assertSame(date("Y", strtotime("+1 year")), $secure_authorize->content->card_data->year);
+            $this->assertSame(14, strlen($secure_authorize->content->action_id));
+            $this->assertSame(14, strlen($secure_authorize->content->transaction_id));
+            $this->assertSame(8, strlen($secure_authorize->content->transaction_key));
+
+            $payment_data = $company->TransactionsData($secure_authorize->content->action_id);
+            $this->assertIsObject($payment_data->order_data);
+            $this->assertIsObject($payment_data->order_data->related);
+
+        }
+    }
+    */
 }
