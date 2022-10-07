@@ -22,6 +22,8 @@ jobs:
             COMPANY_PASSWORD: ${{ secrets.COMPANY_PASSWORD }}
             COMPANY_VERSION: ${{ secrets.COMPANY_VERSION }}
             TESTING_CARDNO: ${{ secrets.TESTING_CARDNO }}
+            TESTING_CARDNO_AMEX: ${{ secrets.TESTING_CARDNO_AMEX }}
+            TESTING_CARDNO_DISCOVER: ${{ secrets.TESTING_CARDNO_DISCOVER }}
             API_AUTOMATIONS_URL: ${{ secrets.API_AUTOMATIONS_URL }}
         with:
           bootstrap: vendor/autoload.php
