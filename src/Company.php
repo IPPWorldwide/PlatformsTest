@@ -3,7 +3,7 @@ namespace App;
 
 class Company {
     private $ENV = null;
-    private function curl ($url,$post_data) {
+    private function curl ($url,$post_data,$json=true) {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
@@ -12,7 +12,10 @@ class Company {
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post_data));
         $server_output = curl_exec($ch);
         curl_close($ch);
-        return json_decode($server_output);
+        if($json)
+            return json_decode($server_output);
+        else
+            return $server_output;
     }
     public function login($username, $password):\stdClass {
         $post_data = ["username" => $username, "password" => $password];
@@ -45,5 +48,9 @@ class Company {
     public function payment_status($transaction_id,$transaction_key){
         $data = ["transaction_id" => $transaction_id, "transaction_key" => $transaction_key];
         return $this->curl($_ENV["API_URL"]."/payments/status", "POST", [], $data)->content;
+    }
+
+    public function domains_checkout($domain){
+        return $this->curl($_ENV["API_AUTOMATIONS_URL"]."domains_generation", ["specific_domain" => $domain],false);
     }
 }
