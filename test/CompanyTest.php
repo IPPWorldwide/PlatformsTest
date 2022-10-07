@@ -191,7 +191,7 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
 
         }
     }
-    /*
+
     public function testSecurePaymentAmex() {
         $request    = new IPPRequest("","");
         $company    = new IPP($request,"","");
@@ -364,7 +364,6 @@ final class CompanyTest extends \PHPUnit\Framework\TestCase
 
         }
     }
-    */
 
     /**
      * $depends testSecurePayment
