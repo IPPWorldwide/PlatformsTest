@@ -90,11 +90,11 @@ class APICompanyTest extends \PHPUnit\Framework\TestCase {
     public function testSpecificDomainProvidertildinfisk() {
         $company    = new Company();
         $this->assertSame("quickpay",$company->domains_checkout("tildinfisk.dk"));
-    }
+    }/*
     public function testSpecificDomainProviderttll() {
         $company    = new Company();
         $this->assertSame("stripe",$company->domains_checkout("ttll.dk"));
-    }
+    }*/
     public function testSpecificDomainProviderdkuliving() {
         $company    = new Company();
         $this->assertSame("pensopay",$company->domains_checkout("dkuliving.dk"));
